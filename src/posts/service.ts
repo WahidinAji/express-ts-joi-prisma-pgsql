@@ -5,6 +5,12 @@ import { Post } from './post';
 const prisma = new PrismaClient();
 
 export async function createPost(title: string, content: string, userId: string): Promise<Post> {
+
+    // const errors = Post.validate({ title, content, userId });
+    // if (errors.length > 0) {
+    //     throw new Error(errors.join(', '));
+    // }
+
     const post = await prisma.post.create({
         data: {
             title: title,

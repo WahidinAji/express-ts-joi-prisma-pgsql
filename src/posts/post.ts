@@ -17,6 +17,21 @@ export class Post {
         this.updatedAt = updatedAt;
     }
 
+    //validate data
+    static validate(data: any): string[] {
+        const errors: string[] = [];
+        if (!data.title) {
+            errors.push('Title is required');
+        }
+        if (!data.content) {
+            errors.push('Content is required');
+        }
+        if (!data.authorId) {
+            errors.push('Author is required');
+        }
+        return errors;
+    }
+
     static fromJson(json: any): Post {
         return new Post(json.id, json.title, json.content, json.authorId, json.published, json.createdAt, json.updatedAt);
     }

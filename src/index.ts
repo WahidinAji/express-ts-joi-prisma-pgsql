@@ -13,6 +13,12 @@ app.get('/', async (req, res) => {
 
 app.use(express.json());
 
+//log all requests
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path}`);
+    next();
+});
+
 // Use the user routes
 app.use(routes);
 app.use(postRoute);

@@ -6,6 +6,7 @@ import express from 'express';
 import { Request, Response } from 'express';
 import { createPost, findAll } from './service';
 import Joi from 'joi';
+import { Post } from './post';
 
 const postValidation = Joi.object({
     title: Joi.string().required(),
@@ -23,15 +24,24 @@ router.post('/posts', async (req: Request, res: Response) => {
             content: content,
             userId: userId
         }
-        const { error } = postValidation.validate(data);
-        if (error) {
-            const errorMessages = error.details.map((err) => err.message);
-            return res.status(400).json({ errors: errorMessages });
+        const errors = Post.validate(data);
+        if (errors.length > 0) {
+            return res.status(400).json({ errors: errors });
         }
+        // const { error } = postValidation.validate(data);
+        // if (error) {
+        //     const errorMessages = error.details.map((err) => err.message);
+        //     return res.status(400).json({ errors: errorMessages });
+        // }
         const newPost = await createPost(data.title, data.content, data.userId);
+        // if (!newPost) {
+        //     newPost
+        // }
         res.json(newPost);
     } catch (error) {
-        console.error(error);
+        // if (error instanceof Error) {
+        //     return res.status(400).json({ errors: error.message });
+        // }
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
